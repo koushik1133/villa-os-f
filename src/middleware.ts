@@ -1,10 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { NOT_CONFIGURED_MESSAGE, SESSION_COOKIE, checkAccessRevocable } from "@/lib/auth";
 
-// The session HMAC is verified with node:crypto's timingSafeEqual, which the
-// Edge runtime does not provide. Node middleware is supported from Next 15.5.
-export const runtime = "nodejs";
-
 /**
  * Routes that must work without a session:
  *
@@ -68,8 +64,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Next's own build output is the only blanket exclusion — it also covers the
-  // dev server's HMR endpoint. Everything else is decided in the body above so
-  // the allow-list stays in one readable place.
-  matcher: ["/((?!_next/).*)"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+  ],
 };

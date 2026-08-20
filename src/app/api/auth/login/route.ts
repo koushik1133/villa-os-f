@@ -71,7 +71,7 @@ export async function POST(request: Request) {
 
   // One generic code for every failure, including "the server has no password
   // configured", so the form can't be used to probe the deployment's state.
-  if (!isAuthConfigured() || !checkPassword(submitted)) {
+  if (!isAuthConfigured() || !(await checkPassword(submitted))) {
     return fail(request, body, next, "invalid", 401);
   }
 
@@ -80,6 +80,6 @@ export async function POST(request: Request) {
   const response = body.json
     ? NextResponse.json({ ok: true })
     : NextResponse.redirect(new URL(next, request.url), { status: 303 });
-  response.cookies.set(sessionCookie(issueSessionToken()));
+  response.cookies.set(sessionCookie(await issueSessionToken()));
   return response;
 }
