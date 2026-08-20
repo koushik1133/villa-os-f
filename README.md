@@ -1,4 +1,4 @@
-# Villa WhatsApp AI Sales Agent — Glentree Serenity 
+# Villa WhatsApp AI Sales Agent — Glentree Serenity
 
 A WhatsApp sales agent that qualifies villa buyers, answers only from approved
 material, books site visits, and hands hot leads to a human — plus the admin
