@@ -1,0 +1,49 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "ES2022"
+    ],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    ".next-buildcheck/types/**/*.ts"
+  ],
+  // This repo lives under an iCloud-synced ~/Desktop, so every `next build`
+  // races iCloud and leaves conflict copies of the generated route types
+  // ("routes.d 5.ts" next to "routes.d.ts"). They re-declare every identifier
+  // in the original, so tsc fails with TS2300 on files no one wrote.
+  // Scoped to .next: only generated output collides this way, and `?` is the
+  // one-character wildcard tsconfig globs support (no character classes).
+  "exclude": [
+    "node_modules",
+    ".next/**/* ?.ts",
+    ".next/**/* ??.ts"
+  ]
+}

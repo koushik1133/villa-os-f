@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+/*
+  VillaOS design system — dark luxury.
+
+  Deliberately not the default dashboard look. The palette is near-black with
+  a warm cast (pure #000 reads cheap on an OLED panel and crushes shadow
+  detail), gold as the single accent, and status colours desaturated enough to
+  sit on dark without vibrating.
+*/
+@theme {
+  /* Surfaces, darkest to lightest */
+  --color-void: #0a0a0c;
+  --color-canvas: #0f0f12;
+  --color-surface: #16161a;
+  --color-raised: #1d1d22;
+  --color-line: #26262d;
+  --color-line-strong: #33333c;
+
+  /* Type */
+  --color-ink: #f2f0ea;
+  --color-muted: #8b8a94;
+  --color-faint: #5c5b66;
+
+  /* Gold — the accent. 500 is the brand value. */
+  --color-gold-100: #f5e6b8;
+  --color-gold-300: #e3c766;
+  --color-gold-500: #d4af37;
+  --color-gold-600: #b8952c;
+  --color-gold-700: #8a6f1f;
+  --color-gold-soft: rgba(212, 175, 55, 0.12);
+  --color-gold-line: rgba(212, 175, 55, 0.28);
+
+  /* Status */
+  --color-hot: #ff7a5c;
+  --color-warm: #efb45c;
+  --color-cold: #7d8ba1;
+  --color-success: #5ec98d;
+  --color-danger: #f4695f;
+  --color-info: #6da8e8;
+
+  /* Chart series — distinguishable on dark, and colour-blind safe order */
+  --color-chart-1: #d4af37;
+  --color-chart-2: #6da8e8;
+  --color-chart-3: #5ec98d;
+  --color-chart-4: #c98ee0;
+  --color-chart-5: #ff9e6c;
+  --color-chart-6: #59c8c3;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Georgia", "Times New Roman", serif;
+}
+
+html,
+body {
+  background: var(--color-void);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Dark scrollbars — a bright default scrollbar wrecks the effect. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--color-line-strong);
+  border-radius: 999px;
+  border: 3px solid var(--color-void);
+}
+
+@layer components {
+  /* Glass card. The gradient is what stops large dark panels reading flat. */
+  .card {
+    @apply relative rounded-2xl border border-[--color-line] p-5;
+    background: linear-gradient(160deg, var(--color-surface) 0%, var(--color-canvas) 100%);
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.03) inset,
+                0 12px 32px -12px rgba(0, 0, 0, 0.7);
+  }
+
+  .card-gold {
+    @apply border-[--color-gold-line];
+    background: linear-gradient(160deg, rgba(212,175,55,0.07) 0%, var(--color-canvas) 70%);
+  }
+
+  .label {
+    @apply text-[10px] font-semibold uppercase tracking-[0.14em] text-[--color-faint];
+  }
+
+  .stat {
+    @apply text-3xl font-semibold tabular-nums tracking-tight text-[--color-ink];
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium;
+  }
+
+  .th {
+    @apply px-4 py-3 text-left text-[10px] font-semibold uppercase tracking-[0.12em] text-[--color-faint];
+  }
+
+  .td {
+    @apply px-4 py-3.5 text-sm text-[--color-ink];
+  }
+
+  .row-hover {
+    @apply transition-colors hover:bg-[--color-raised];
+  }
+
+  /* Inputs — dark by default so no field flashes white. */
+  .field {
+    @apply w-full rounded-xl border border-[--color-line] bg-[--color-void] px-3 py-2.5 text-sm text-[--color-ink]
+           placeholder:text-[--color-faint]
+           focus:border-[--color-gold-line] focus:outline-none focus:ring-2 focus:ring-[--color-gold-soft];
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold
+           text-[--color-void] transition disabled:opacity-40;
+    background: linear-gradient(135deg, var(--color-gold-300), var(--color-gold-600));
+  }
+  .btn-gold:hover:not(:disabled) { filter: brightness(1.08); }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-[--color-line]
+           bg-[--color-surface] px-4 py-2.5 text-sm font-medium text-[--color-ink]
+           transition hover:border-[--color-line-strong] hover:bg-[--color-raised] disabled:opacity-40;
+  }
+
+  .nav-link {
+    @apply flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] text-[--color-muted]
+           transition hover:bg-[--color-raised] hover:text-[--color-ink];
+  }
+  .nav-link-active {
+    @apply bg-[--color-gold-soft] text-[--color-gold-100];
+    box-shadow: inset 2px 0 0 0 var(--color-gold-500);
+  }
+
+  /* Thin top hairline used to separate the topbar without a hard border. */
+  .hairline-gold {
+    background: linear-gradient(90deg, transparent, var(--color-gold-line), transparent);
+  }
+}
+
+/* Recharts paints an SVG; these keep its defaults from fighting the theme. */
+.recharts-cartesian-grid line { stroke: var(--color-line); }
+.recharts-text { fill: var(--color-muted); font-size: 11px; }
+.recharts-tooltip-wrapper { outline: none; }

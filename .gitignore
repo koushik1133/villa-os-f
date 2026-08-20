@@ -1,0 +1,20 @@
+node_modules/
+.next/
+out/
+build/
+.DS_Store
+
+# Secrets — never commit. Fill in .env.local from .env.example.
+# Catch-all first: any new .env variant is ignored by default rather than by
+# someone remembering to add it here.
+.env
+.env.*
+.env.local
+.env*.local
+
+# .env.example is a placeholder-only template and IS meant to be committed —
+# the `.env.*` rule above would otherwise swallow it.
+!.env.example
+
+*.tsbuildinfo
+next-env.d.ts
